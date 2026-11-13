@@ -1,3 +1,4 @@
+
 name: GitHub Metrics
 
 on:
@@ -8,40 +9,64 @@ on:
 jobs:
   github-metrics:
     runs-on: ubuntu-latest
+
     permissions:
       contents: write
+
     steps:
-      - name: Generate Metrics
+      - name: Generate GitHub Metrics
         uses: lowlighter/metrics@latest
+
         with:
+          # GitHub account
           token: ${{ secrets.METRICS_TOKEN }}
           filename: github-metrics.svg
-          
-          # Makes the card 960px wide (two-column layout)
-          config_display: large
-          
-          # Controls the exact order of sections so they balance left & right
-          config_order: base.header, base.activity, base.community, base.repositories, habits, isocalendar, languages, topics
-          
-          # Header and basic stats
+
+          # Layout
+          template: classic
+          config_display: columns
+          config_timezone: Asia/Kolkata
+          config_animations: yes
+
+          # Base profile information
           base: header, activity, community, repositories
-          
-          # Coding habits & bar charts (max days allowed is 30)
+
+          # LEFT COLUMN — Coding habits
           plugin_habits: yes
-          plugin_habits_from: 200
-          plugin_habits_days: 30
-          plugin_habits_facts: yes
+          plugin_habits_days: 14
           plugin_habits_charts: yes
-          
-          # 3D Contribution calendar
-          plugin_isocalendar: yes
-          
-          # Programming languages breakdown
-          plugin_languages: yes
-          plugin_languages_indepth: yes
-          
-          # Colorful tech icon grid (requires topics added to your repos)
+          plugin_habits_facts: yes
+          plugin_habits_charts_type: graph
+
+          # LEFT COLUMN — Technology topics
           plugin_topics: yes
-          plugin_topics_mode: icons
-          plugin_topics_sort: stars
+          plugin_topics_mode: mastered
           plugin_topics_limit: 0
+
+          # RIGHT COLUMN — PageSpeed
+          plugin_pagespeed: yes
+          plugin_pagespeed_url: ${{ vars.PAGESPEED_URL }}
+          plugin_pagespeed_token: ${{ secrets.PAGESPEED_TOKEN }}
+
+          # RIGHT COLUMN — 3D contribution calendar
+          plugin_isocalendar: yes
+          plugin_isocalendar_duration: full-year
+
+          # RIGHT COLUMN — Music
+          plugin_music: yes
+          plugin_music_mode: playlist
+          plugin_music_playlist: ${{ vars.MUSIC_PLAYLIST_URL }}
+          plugin_music_limit: 4
+
+          # RIGHT COLUMN — Most used languages
+          plugin_languages: yes
+          plugin_languages_limit: 8
+          plugin_languages_sections: most-used
+          plugin_languages_details: percentage
+
+          # RIGHT COLUMN — GitHub projects
+          plugin_projects: yes
+          plugin_projects_limit: 4
+
+          # Display order
+          config_order: base.header, base.activity, base.community, base.repositories, habits, topics, pagespeed, isocalendar, music, languages, projects
