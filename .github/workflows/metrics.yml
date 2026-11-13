@@ -17,16 +17,19 @@ jobs:
           token: ${{ secrets.METRICS_TOKEN }}
           filename: github-metrics.svg
           
-          # Makes it wide (two columns)
-          config_display: columns
+          # Makes the card 960px wide (two-column layout)
+          config_display: large
+          
+          # Controls the exact order of sections so they balance left & right
+          config_order: base.header, base.activity, base.community, base.repositories, habits, isocalendar, languages, topics
           
           # Header and basic stats
-          base: header, activity, community, repositories, metadata
+          base: header, activity, community, repositories
           
-          # Coding habits & bar charts
+          # Coding habits & bar charts (max days allowed is 30)
           plugin_habits: yes
-          plugin_habits_from: 500
-          plugin_habits_days: 365
+          plugin_habits_from: 200
+          plugin_habits_days: 30
           plugin_habits_facts: yes
           plugin_habits_charts: yes
           
@@ -37,8 +40,8 @@ jobs:
           plugin_languages: yes
           plugin_languages_indepth: yes
           
-          # Mastered technologies and topics (icon grid)
+          # Colorful tech icon grid (requires topics added to your repos)
           plugin_topics: yes
-          plugin_topics_mode: mastered
+          plugin_topics_mode: icons
           plugin_topics_sort: stars
-          plugin_topics_limit: 24
+          plugin_topics_limit: 0
